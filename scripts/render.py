@@ -213,7 +213,7 @@ class Shot:
         inv = 1 / scale
         out = img.transform((W, H), Image.AFFINE, (inv, 0, cx - W / 2 * inv, 0, inv, cy - H / 2 * inv),
                             resample=Image.BILINEAR).filter(self.lut)
-        return ImageChops.screen(out, self.light) if self.light else out
+        return ImageChops.screen(out, self.light) if self.light is not None else out
 
 
 def light_image(spec):
@@ -221,7 +221,7 @@ def light_image(spec):
     lx, ly, radius, color, strength = spec
     yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
     d = np.sqrt((xx / W - lx) ** 2 + ((yy - ly * H) / W) ** 2) / radius
-    k = np.clip(1 - d, 0, 1) ** 2.2 * strength
+    k = np.clip(1 - d, 0, 1) ** 1.6 * strength
     rgb = k[..., None] * np.array(color, np.float32)
     return Image.fromarray(np.clip(rgb, 0, 255).astype(np.uint8))
 
