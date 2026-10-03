@@ -6,7 +6,12 @@ erzählt wie eine alte polnische Familienchronik. Die polnische Voice-over-Datei
 einer Sprechpause.
 
 **Format:** 1920×1080, 16:9, 24 fps, 35mm-Look (Grading pro Kapitel, Halation,
-Vignette, Film Grain, leichter Bildstand-Wackler), ca. 44,5 s.
+Vignette, Film Grain, leichter Bildstand-Wackler), 44,5 s.
+
+**Ergebnis:** liegt in der Higgsfield-Medienbibliothek —
+`tata_45_lat.mp4` (Master, H.264 CRF 17, ~240 MB) und
+`tata_45_lat_kompakt.mp4` (~24 MB, zum Verschicken). Die Videodateien selbst sind
+nicht im Repo (Größe, und das Repo ist öffentlich).
 
 ## Dramaturgie
 
