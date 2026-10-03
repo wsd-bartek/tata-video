@@ -43,6 +43,8 @@ def film(t_vo):
 # move:  (zoom_start, zoom_end, pan_x_start, pan_x_end, pan_y_start, pan_y_end);
 #        pan values are fractions of the free margin (-1 .. 1, 0 = centred).
 # grade: name of a look in render.py GRADES.
+# light: optional low sun / window light added after the grade:
+#        (x, y, radius, (r, g, b), strength) - position and radius in frame widths.
 # photo: optional basename in assets/photos/ - a real family photo there
 #        replaces the generated picture for this shot.
 SHOTS = [
@@ -51,13 +53,14 @@ SHOTS = [
          note="1981 - darkness, fog over the fields, lone farmhouse, first light"),
     dict(id="s02_homestead", start=4.42, end=6.80, kind="still", grade="dawn_warm",
          move=(1.04, 1.12, -0.30, 0.15, 0.10, -0.05),
-         note="rozpoczęła się jego historia - old homestead in the morning"),
+         light=(0.95, 0.30, 0.75, (255, 166, 92), 0.42),
+         note="rozpoczęła się jego historia - old homestead, first sun"),
     dict(id="s03_road", start=6.80, end=9.20, kind="still", grade="memory",
          move=(1.03, 1.10, 0.10, -0.10, 0.10, 0.00),
          note="pełnych radości - Fiat 126p on a village road, late 80s"),
     dict(id="s04_memories", start=9.20, end=11.30, kind="still", grade="memory",
-         move=(1.06, 1.16, -0.10, -0.40, 0.00, -0.30),
-         note="wyzwań i wspomnień - old family photographs, a watch"),
+         move=(1.14, 1.24, -0.30, -0.55, -0.35, -0.65),
+         note="wyzwań i wspomnień - watch, glasses, old family photographs"),
     dict(id="s05_nursery2008", start=11.30, end=13.20, kind="still", grade="warm",
          move=(1.03, 1.10, -0.50, -0.70, 0.00, 0.00),
          note="W 2008 roku - the light turns warm"),
@@ -66,6 +69,7 @@ SHOTS = [
          note="ktoś wyjątkowy - jego syn, Bartek (slow push-in)"),
     dict(id="s07_together", start=17.05, end=20.05, kind="still", grade="warm_soft",
          move=(1.05, 1.12, 0.00, 0.00, 0.15, -0.05), photo="together",
+         light=(0.80, 0.12, 0.85, (255, 178, 104), 0.36),
          note="Od tego dnia ich historia stała się wspólna"),
     dict(id="s08_golden2026", start=20.05, end=27.00, kind="video", grade="golden",
          move=(1.02, 1.08, 0.00, 0.00, 0.00, -0.10),
@@ -99,9 +103,9 @@ TAIL = 1.4                    # black after the end card has faded out
 # Titles over the picture, voice-over time.
 TITLES = [
     dict(text="05.10.1981  —  05.10.2026", start=23.00, end=25.25, fade=0.7,
-         font="CormorantGaramond-Regular-Lining.ttf", size=58, tracking=0.16, y=0.50),
+         font="CormorantGaramond-Medium-Lining.ttf", size=66, tracking=0.16, y=0.50),
     dict(text="45 LAT", start=25.45, end=27.15, fade=0.6,
-         font="CormorantGaramond-Light-Lining.ttf", size=132, tracking=0.34, y=0.50),
+         font="CormorantGaramond-Regular-Lining.ttf", size=140, tracking=0.34, y=0.50),
 ]
 
 # End card on black. offset = delay after END_CARD start.

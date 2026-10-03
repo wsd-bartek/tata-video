@@ -1,5 +1,5 @@
 {
-  "_about": "Generated pictures (Higgsfield, Cinema Studio Image 2.5 stills, Minimax Hailuo 2.3 Fast moving plates). Fetched by scripts/fetch_assets.py.",
+  "_about": "Generated pictures (Higgsfield: Cinema Studio Image 2.5 stills, Minimax Hailuo 2.3 Fast moving plates; s09 jacket recoloured with Nano Banana). Fetched by scripts/fetch_assets.py.",
   "base": "https://d8j0ntlcm91z4.cloudfront.net/user_3ImbnIwyonfqF5H0SpWKjPUdLJK/",
   "shots": {
     "s01_fog1981":     {"plate": "hf_20261003_155945_a30d4afa-f8b9-49a2-82a5-774cafbf617f.png",
@@ -12,7 +12,8 @@
     "s07_together":    {"plate": "hf_20261003_155945_5c7498f4-f523-4433-8022-cd81d37d81ac.png"},
     "s08_golden2026":  {"plate": "hf_20261003_155726_ccd7e7fc-b0f5-4eb5-9dda-409600d658fa.png",
                         "clip":  "hf_20261003_160848_9d0f4ffb-13ad-4c3e-b547-4e992bf09dfe.mp4"},
-    "s09_tato":        {"plate": "hf_20261003_155945_a1fb4a62-647e-40f3-ad38-5660a903eb2e.png",
+    "s09_tato":        {"plate": "hf_20261003_163116_ded8b75a-93b1-47b1-acb9-e43d7336f28e.png",
+                        "original": "hf_20261003_155945_a1fb4a62-647e-40f3-ad38-5660a903eb2e.png",
                         "alternate": "hf_20261003_160644_61a1e215-4841-4acd-a06a-2efcf86dfbee.png"},
     "s10_road_ahead":  {"plate": "hf_20261003_160106_a4729b94-cee2-4bc3-90c3-56288704d3ce.png",
                         "clip":  "hf_20261003_160643_07625c05-741f-442d-966d-c246767d978f.mp4"}

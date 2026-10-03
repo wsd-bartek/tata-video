@@ -95,7 +95,7 @@ def grade_fn(x, g):
     if g.get("blue_desat"):
         # pull saturated blues (e.g. a bright fleece) towards neutral
         lum = (x @ LUMA)[..., None]
-        blue = np.clip((x[..., 2] - np.maximum(x[..., 0], x[..., 1])) * 4.0, 0, 1)
+        blue = np.clip((x[..., 2] - np.maximum(x[..., 0], x[..., 1])) * 7.0, 0, 1)
         k = (g["blue_desat"] * blue)[..., None]
         x = x * (1 - k) + lum * k
     x = x * g["exposure"]
@@ -173,6 +173,7 @@ class Shot:
             self.still, self.source = Image.open(plate_path).convert("RGB"), plate_path
         else:
             raise SystemExit(f"missing picture for {self.id}")
+        self.light = light_image(spec["light"]) if spec.get("light") else None
         if self.still is not None:
             zmax = max(spec["move"][0], spec["move"][1])
             # pre-scale so the move neither upsamples much nor aliases
@@ -211,8 +212,18 @@ class Shot:
         cy = img.height / 2 + lerp(py0, py1, u) * my + weave[1] / scale
         inv = 1 / scale
         out = img.transform((W, H), Image.AFFINE, (inv, 0, cx - W / 2 * inv, 0, inv, cy - H / 2 * inv),
-                            resample=Image.BILINEAR)
-        return out.filter(self.lut)
+                            resample=Image.BILINEAR).filter(self.lut)
+        return ImageChops.screen(out, self.light) if self.light else out
+
+
+def light_image(spec):
+    """A soft, warm low-sun glow (screen-blended over the graded picture)."""
+    lx, ly, radius, color, strength = spec
+    yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+    d = np.sqrt((xx / W - lx) ** 2 + ((yy - ly * H) / W) ** 2) / radius
+    k = np.clip(1 - d, 0, 1) ** 2.2 * strength
+    rgb = k[..., None] * np.array(color, np.float32)
+    return Image.fromarray(np.clip(rgb, 0, 255).astype(np.uint8))
 
 
 # --------------------------------------------------------------------------
@@ -286,7 +297,7 @@ class Title:
         b, pad = mask.getbbox(), 60
         self.box = (max(0, b[0] - pad), max(0, b[1] - pad), min(W, b[2] + pad), min(H, b[3] + pad))
         self.mask = mask.crop(self.box)
-        self.shadow = self.mask.filter(ImageFilter.GaussianBlur(9))
+        self.shadow = self.mask.filter(ImageFilter.GaussianBlur(11))
         self.color = Image.new("RGB", self.mask.size, TEXT_COLOR)
 
     def opacity(self, t):
@@ -301,7 +312,8 @@ class Title:
         blur = 5.0 * (1 - smooth((t - self.start) / self.fade))   # focus pull while appearing
         m = self.mask.filter(ImageFilter.GaussianBlur(blur)) if blur > 0.3 else self.mask
         region = img.crop(self.box)
-        shade = self.shadow.point([int(255 - 0.40 * a * v) for v in range(256)]).convert("RGB")
+        shade = self.shadow.point([int(255 - min(1.0, 0.60 * a * v / 160) * 255) for v in range(256)])
+        shade = shade.convert("RGB")
         region = ImageChops.multiply(region, shade)                  # soft shadow for legibility
         region = Image.composite(self.color, region, m.point([int(v * a) for v in range(256)]))
         img.paste(region, self.box[:2])
@@ -370,7 +382,7 @@ def render_frame(frame_no):
     img = scale_img(img, k)
     dim = title_dim(t)
     if dim > 0:
-        shade = STATE["centre"].point([int(255 - 0.22 * dim * v) for v in range(256)]).convert("RGB")
+        shade = STATE["centre"].point([int(255 - 0.30 * dim * v) for v in range(256)]).convert("RGB")
         img = ImageChops.multiply(img, shade)
     for title in STATE["titles"]:
         img = title.draw(img, t)
