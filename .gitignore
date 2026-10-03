@@ -1,0 +1,5 @@
+build/
+__pycache__/
+# downloaded by scripts/fetch_assets.py
+assets/plates/*.png
+assets/clips/*.mp4
