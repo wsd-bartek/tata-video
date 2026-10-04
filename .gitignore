@@ -3,3 +3,8 @@ __pycache__/
 # downloaded by scripts/fetch_assets.py
 assets/plates/*.png
 assets/clips/*.mp4
+
+# private family photos and recordings - never pushed (public repo)
+assets/photos/private/
+assets/voiceover/private/
+regie/private/
