@@ -54,6 +54,25 @@ Nützlich beim Feintuning: `render.py --stills 3 25 38` (einzelne Frames als JPE
 `render.py --range 20 28` (nur ein Abschnitt). Alle Zeiten, Schnitte, Titel und
 Kamerafahrten stehen zentral in `scripts/timeline.py`.
 
+## Langfassung (ca. 4:48)
+
+Die lange Familienchronik nutzt echte Familienfotos und persönliche Sprachaufnahmen.
+Diese liegen **nur lokal** und sind per `.gitignore` ausgeschlossen
+(`assets/photos/private/`, `assets/voiceover/private/`, `regie/private/`), ebenso der
+Schnittplan `regie/private/film_config.py` (Einstellungen, Titel, Musikplan).
+
+```bash
+python3 scripts/compose_long.py regie/private/film_config.py build/long/music_long.wav
+python3 scripts/mix_long.py     regie/private/film_config.py build/long/music_long.wav build/long/mix_long.wav
+python3 scripts/film.py         regie/private/film_config.py --audio build/long/mix_long.wav --out build/long/film_long.mp4
+```
+
+`scripts/film.py` ist eine allgemeine Film-Engine: freie Kamerafahrten (Bildausschnitt
+von Box zu Box), Farbgrading per 3D-LUT, Lichtquellen, animierter Nebel, fallende
+Blätter, Lichtlecks an Kapitelwechseln, Staub/Kratzer, Kapitelkarten und Titel mit
+Fokus-Einblendung, Halation, Vignette, Grain. Die KI-Standbilder liegen in hoher
+Auflösung unter `assets/plates/hi/`.
+
 ## Quellen
 
 - Bilder: Higgsfield Cinema Studio Image 2.5 (Standbilder), Minimax Hailuo 2.3 Fast

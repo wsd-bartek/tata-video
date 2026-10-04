@@ -97,10 +97,16 @@ def ticks(sec):
 def build_midi(path):
     end = total_duration()
     events = []  # (tick, order, channel, message)
+    sounding = {}  # (channel, pitch) -> index of its pending note_off
 
     def note(ch, t0, t1, pitch, vel):
+        prev = sounding.get((ch, pitch))
+        if prev is not None and events[prev][0] > ticks(t0):
+            # a legato overlap of the same pitch must not cut the new note short
+            events[prev] = (ticks(t0),) + events[prev][1:]
         events.append((ticks(t0), 1, ch, mido.Message("note_on", channel=ch, note=pitch, velocity=vel)))
         events.append((ticks(t1), 0, ch, mido.Message("note_off", channel=ch, note=pitch, velocity=0)))
+        sounding[(ch, pitch)] = len(events) - 1
 
     def cc(ch, t, control, value):
         events.append((ticks(t), 0, ch, mido.Message("control_change", channel=ch,
